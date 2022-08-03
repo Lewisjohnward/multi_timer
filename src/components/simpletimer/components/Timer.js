@@ -5,10 +5,6 @@ const blue = "#43a2ab"
 const red = "#e8063c"
 const gray = "#000000"
 
-const Container = styled.div`
-    margin-top: 25px;
-`
-
 const Display = styled.div`
     display: flex;
     width: 300px;
@@ -38,11 +34,9 @@ const ButtonContainer = styled.div`
      }
 `
 const Button = styled.button`
-    padding: 8px 10px;
+    padding: 5px 10px;
     background: ${({color}) => `${color}`};
     border-radius: 3px;
-    font-size: 0.9rem;
-
     color: white;
 
     &:hover {
@@ -91,7 +85,7 @@ export const Timer = ({time, setTime, setRunning, running, resetTime}) => {
         )}
 
     return (
-        <Container>
+        <>
             <Display>
                 {renderTime(time)}
             </Display>
@@ -112,6 +106,6 @@ export const Timer = ({time, setTime, setRunning, running, resetTime}) => {
                 }
 
             </ButtonContainer>
-        </Container>
+        </>
     )
 }

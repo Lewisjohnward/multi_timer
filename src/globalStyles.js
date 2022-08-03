@@ -2,12 +2,12 @@ import {createGlobalStyle} from "styled-components"
 
 const GlobalStyle = createGlobalStyle`
    * {
-    font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
    } 
 
     body{
-    margin: 0;
+        margin: 0;
     }
 
     input {
@@ -15,10 +15,11 @@ const GlobalStyle = createGlobalStyle`
     }
     
     button {
-    border: none;
-    background: none;
-    font-size: 1rem;
+        border: none;
+        background: none;
+        font-size: 1rem;
     }
+
     a {
         text-decoration: none;
         color: black;
