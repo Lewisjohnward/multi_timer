@@ -1,172 +1,97 @@
 import {useState, useEffect} from "react"
 import styled from "styled-components"
-import {AiOutlineCaretRight} from "react-icons/ai"
-import {BsArrowsMove} from "react-icons/bs"
-import {GiPadlock} from "react-icons/gi"
-import {Name} from "./components/Name"
-import {Reset} from "./components/Reset"
+import {useContext} from "react"
+import {ThemeContext} from "styled-components"
+import {renderTime} from "../../helpers/functions"
 
-
-const Container = styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 10px 30px;
-    background: white;
-    //border: 1px solid black;
-    //border-radius: 3px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-`
-
-const NameContainer = styled.div`
-  
-`
-
-const PlayIco = styled(AiOutlineCaretRight)`
-`
-
-const TimeTextContainer = styled.div`
-    background: white;
-    border-radius: 5px;
-    padding: 10px 50px;
-`
-const TimeText = styled.text`
-    font-size: 2rem;
-`
-
-const ToggleDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const StopwatchContainer = styled.div`
+    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.3);
     text-align: center;
-    font-size: 1rem;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 2px 8px;
-    width: 80px;
-
-    &:hover{
-        cursor: pointer;
-    }
-
-    background: ${({running}) => running ? `red` : `green`};
+    font-size: 4rem;
+    padding: 40px 20px;
+    background: ${({theme}) => theme.blue};
 `
 
-const ControlContainer = styled.div`
+const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-between;
-    width: 140px;
+    width: 300px;
+
+    > * {
+        margin-right: 10px;
+    }
 `
 
-const ResetContainer = styled.text`
-`
-
-const ToggleText = styled.text`
-`
-
-const MSecContainer = styled.span`
-    font-size: 0.7rem;
-`
-
-const LockIco = styled(GiPadlock)`
-    position: absolute;
-    top: 4%;
-    right: 2%;
-    font-size: 1.6rem;
-    border-radius: 2px;
-    padding: 3px;
-    box-shadow: ${({locked}) => locked ? `0px 0px 3px inset  rgba(0, 0, 0, 0.8)` : `0px 0px 3px rgba(0, 0, 0, 0.8)` };
+const Button = styled.button`
+    background: ${({background}) => `${background}`};
+    color: white;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 3px;
 
     &:hover{
-        transform: scale(1.1);
-        cursor: pointer;
-    }
-    &:active{
-        transform: scale(1.1) translateY(1px);
         cursor: pointer;
     }
 `
 
-const ArrowIco = styled(BsArrowsMove)`
-
-    &:hover{
-        cursor: all-scroll;
-        transform: scale(1.1);
-    }
-    &:active{
-        cursor:all-scroll;
-        transform: scale(1.3);
-    }
-    
+const Text = styled.div`
+    color: ${({theme}) => `${theme.orange};`}
+    font-size: 1.5rem;
 `
 
 export const Stopwatch = () => {
+    const [time, setTime] = useState(0)
     const [running, setRunning] = useState(false)
-    const [count, setCount] = useState(0)
-    const [name, setName] = useState("My stopwatch")
-    const [locked, setLocked] = useState(false)
 
-    const toggleRunning = () => setRunning(prev => !prev)
-    const incrementCount = () => setCount(prev => prev + 1)
-    const resetCount = () => setCount(0)
 
-    useEffect(() => {
-        running && setTimeout(incrementCount, 10)
-    }, [running, count])
+    const themeContext = useContext(ThemeContext)
 
+    const handleStart = () => {
+        setRunning(true)
+    }
+
+    const handleStop = () => {
+        setRunning(false)
+    }
 
     const handleReset = () => {
         setRunning(false)
-        setTimeout(resetCount, 50)
-    }
-    const renderTime = (s) => {
-        const multiplier = 100
-        const hours = formatTime(Math.floor(s / (multiplier *60 * 60)))
-        let rtime = s - (hours * 60 * 60* multiplier)
-        const minutes = formatTime(Math.floor(rtime / (60 * multiplier)))
-        rtime = rtime - minutes * 60 * multiplier
-        const seconds = formatTime(Math.floor(rtime / (multiplier)))
-        rtime = rtime - seconds * multiplier 
-        const mseconds = formatTime(rtime)
-
-
-        return <div>{hours} : {minutes} : {seconds}<MSecContainer>{mseconds}</MSecContainer></div>
+        setTimeout(resetTime, 20)
     }
 
-    const formatTime = (val) => {
-        const temp = val < 10 ? "0" + val : val
-        return temp
+    const resetTime = () => {
+        setTime(0)
     }
 
-    const checkLock = (fun) => {
-        if(!locked) fun()
+    const incrementTime = () => {
+        setTime(prev => prev + 1)
     }
+
+    const timeoutSpeed = 10
+
+    useEffect(() => {
+        running && setTimeout(incrementTime, timeoutSpeed)
+    }, [running, time])
+
+    const [hours, mins, secs, mj] = renderTime(time, timeoutSpeed)
 
 
     return (
-        <Container>
-            <ArrowIco />
-            <LockIco 
-                onClick={() => setLocked(prev => !prev)}
-                locked={locked}/>
-            <Name name={name} setName={setName} locked={locked} />
-            <TimeTextContainer>
-                <TimeText>
-                    {renderTime(count)}
-                </TimeText>
-            </TimeTextContainer>
-            <ControlContainer>
-                <ToggleDiv onClick={() => checkLock(toggleRunning)} running={running}>
-                    {
-                        running ?
-                            <ToggleText >Stop</ToggleText>
-                            :
-                            <ToggleText>Start</ToggleText>
-                    }
-                </ToggleDiv>
-                <Reset handleReset={() => checkLock(handleReset)} />
-            </ControlContainer>
-        </Container>
+        <>
+        <Text>Stopwatch</Text>
+        <StopwatchContainer>
+            {hours}:{mins}:{secs}
+        </StopwatchContainer>
+            <ButtonContainer>
+                <Button background={themeContext.button.start_green} onClick={() => handleStart()}>
+                    Start
+                </Button>
+                <Button background={themeContext.button.stop_blue} onClick={() => handleStop()}>
+                    Stop
+                </Button>
+                <Button background={themeContext.button.reset_red} onClick={() => handleReset()}>
+                    Reset
+                </Button>
+            </ButtonContainer>
+        </>
     )
 }
