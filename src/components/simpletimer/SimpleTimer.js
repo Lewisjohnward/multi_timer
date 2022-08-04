@@ -83,8 +83,8 @@ const TimeSelectContainer = styled.div`
 `
 
 export const SimpleTimer = () => {
-    const [time, setTime] = useState(30)
-    const [initTime, setInitTime] = useState(30)
+    const [time, setTime] = useState(300)
+    const [initTime, setInitTime] = useState(300)
     const [running, setRunning] = useState(false)
     const [ringTime, setRingTime] = useState(2)
 
@@ -108,20 +108,26 @@ export const SimpleTimer = () => {
     }
 
     const handleTime = (d) => {
-        setTime(d)
-        setInitTime(d)
-        setRunning(true)
+        if(!running) {
+            setTime(d * 10)
+            setInitTime(d * 10)
+            handleStart()
+        }
     }
+    const handleStart = () => {
+        setTimeout(start, 1000)
+    }
+
+    const start = () => setRunning(true)
 
     const decrementTime = () => setTime(prev => prev - 1)
     const resetTime = () => setTime(initTime)
 
     useEffect(() => {
-        console.log("use effect called")
-        running && setTimeout(decrementTime, 1000)
+        running && setTimeout(decrementTime, 100)
         if(!time && running) {
             setRunning(false)
-            setTimeout(resetTime, 1080)
+            setTimeout(resetTime, 110)
         }
     }, [running, time])
 

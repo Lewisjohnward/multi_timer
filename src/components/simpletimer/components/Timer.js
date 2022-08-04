@@ -52,16 +52,21 @@ export const Timer = ({time, setTime, setRunning, running, resetTime}) => {
         setReset(true)
     }
 
+    const handleStart = () => {
+        setTimeout(start, 1000)
+    }
 
-    const renderTime = (time) => {
+    const start = () => setRunning(true)
+
+
+    const displayTime = (time) => {
         time = time < 0 ? 0 : time
-        const mins = Math.floor(time / 60)
-        const seconds = time - (mins * 60)
+        const mins = Math.floor(time / (60 * 10))
+        const seconds = time - (mins * (60 * 10))
         const mins1 = Math.floor(mins / 10)
-        const mins2 = mins - (mins1 * 10)
-        const secs1 = Math.floor(seconds / 10)
-        const secs2 = seconds - (secs1 * 10)
-
+        const mins2 = mins - (mins1 * (10))
+        const secs1 = Math.floor(seconds / (10 * 10))
+        const secs2 = Math.floor((seconds - (secs1 * (10 * 10))) / 10)
 
 
         return (
@@ -87,10 +92,10 @@ export const Timer = ({time, setTime, setRunning, running, resetTime}) => {
     return (
         <>
             <Display>
-                {renderTime(time)}
+                {displayTime(time)}
             </Display>
             <ButtonContainer>
-                <Button color={blue} onClick={() => setRunning(true)}>
+                <Button color={blue} onClick={() => handleStart()}>
                     Start
                 </Button>
 
@@ -100,7 +105,7 @@ export const Timer = ({time, setTime, setRunning, running, resetTime}) => {
                             Stop
                         </Button>
                         :
-                        <Button color={reset ? gray : red} onClick={() => handleReset()}>
+                        <Button color={red} onClick={() => handleReset()}>
                             Reset
                         </Button>
                 }
