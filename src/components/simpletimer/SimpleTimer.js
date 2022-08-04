@@ -1,6 +1,7 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useRef} from "react"
 import styled from "styled-components"
 import {Timer} from "./components/Timer"
+import {Alarm} from "./components/Alarm"
 
 const orange = "#eb4934"
 const blue = "#30b1cf"
@@ -36,7 +37,7 @@ const PresetTime = styled.div`
 
 const SettingsContainer = styled.div`
     background: ${gray};
-    padding: 10px 10px;
+    padding: 5px 10px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     
@@ -58,11 +59,16 @@ const RingTimeContainer = styled.div`
     display: flex;
     color: white;
 `
-const Slider = styled.input.attrs({
-    type: 'range',
-    min: '0',
-    max: '100',
-})`
+const Slider = styled.input.attrs(
+    props => {
+        return ({
+            type: 'range',
+            min: '0',
+            max: '100',
+            value: props.slideValue
+        })
+    }
+)`
     height: 5px;
     background: ${blue};
 `
@@ -87,9 +93,14 @@ export const SimpleTimer = () => {
     const [initTime, setInitTime] = useState(300)
     const [running, setRunning] = useState(false)
     const [ringTime, setRingTime] = useState(2)
+    const [alarm, setAlarm] = useState("beep")
+    const [slideValue, setSlideValue] = useState(25)
+
+    const audioRef = useRef()
 
     const generateTimes = () => {
         const arr = new Array(30).fill(0).map((d, i) => 30 + (i * 30))
+        arr.unshift(2)
         return arr
     }
     const ringTimes = () => {
@@ -135,43 +146,46 @@ export const SimpleTimer = () => {
         setRingTime(d)
     }
 
+    const handleVolumeSlider = (e) => {
+        setSlideValue(e.target.value)
+    }
+
 
     return (
         <>
-                <Text color={orange}>Simple countdown timer</Text>
-                <Timer time={time} setTime={setTime} setRunning={setRunning} running={running} resetTime={resetTime}/>
-                <Text color={blue}>Start a timer quickly</Text>
-                <PresetTimeContainer>
-                    {generateTimes().map(d => <PresetTime onClick={() => handleTime(d)}>{renderTime(d)}</PresetTime>)}
-                </PresetTimeContainer>
-                <SettingsContainer>
-                    <Text color={orange}>Settings</Text>
-                    <OptionContainer>
-                        <Option>
-                            How long should the alarm ring for
-                        </Option>
-                        <RingTimeContainer>
-                            {ringTimes().map(d => <TimeSelectContainer background={ringTime == d ? true : false} onClick={() => handleSelectRingTime(d)}>{d}s</TimeSelectContainer>)}
-                        </RingTimeContainer>
-                    </OptionContainer>
-                    <OptionContainer>
-                        <Option>
-                            How loud should the alarm be
-                        </Option>
-                        <Slider />
-                    </OptionContainer>
-                    <OptionContainer>
-                        <Option>
-                            Choose alarm sound
-                        </Option>
-                        <Dropdown>
-                            <option value="1">Sharp</option>
-                            <option value="2">Needle</option>
-                            <option value="3">Blast</option>
-                        </Dropdown>
-                    </OptionContainer>
-
-                </SettingsContainer>
-            </>
+            <Alarm time={time} ringTime={ringTime} alarm={alarm} volume={slideValue}/>
+            <Text color={orange}>Simple countdown timer</Text>
+            <Timer time={time} setTime={setTime} setRunning={setRunning} running={running} resetTime={resetTime}/>
+            <Text color={blue}>Start a timer quickly</Text>
+            <PresetTimeContainer>
+                {generateTimes().map(d => <PresetTime onClick={() => handleTime(d)}>{renderTime(d)}</PresetTime>)}
+            </PresetTimeContainer>
+            <SettingsContainer>
+                <Text color={orange}>Settings</Text>
+                <OptionContainer>
+                    <Option>
+                        How long should the alarm ring for
+                    </Option>
+                    <RingTimeContainer>
+                        {ringTimes().map(d => <TimeSelectContainer background={ringTime == d ? true : false} onClick={() => handleSelectRingTime(d)}>{d}s</TimeSelectContainer>)}
+                    </RingTimeContainer>
+                </OptionContainer>
+                <OptionContainer>
+                    <Option>
+                        How loud should the alarm be
+                    </Option>
+                    <Slider slideValue={slideValue} onChange={(e) => handleVolumeSlider(e)}/>
+                </OptionContainer>
+                <OptionContainer>
+                    <Option>
+                        Choose alarm sound
+                    </Option>
+                    <Dropdown onChange={(e) => setAlarm(e.target.value)}>
+                        <option value="beep">Beep</option>
+                        <option value="soft">Soft</option>
+                    </Dropdown>
+                </OptionContainer>
+            </SettingsContainer>
+        </>
     )
 }
