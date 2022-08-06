@@ -7,9 +7,11 @@ import {Stopwatch} from "../stopwatch/Stopwatch"
 const border = "1px solid rgba(0, 0, 0, 0.1);"
 const Frame = styled.div`
     margin-top: 30px;
+
 `
 const Container = styled.div`
     border-bottom: ${border};
+
 `
 
 const BodyContainer = styled.div`
