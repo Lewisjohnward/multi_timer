@@ -62,7 +62,7 @@ export const Banner = () => {
                 <StopwatchIco />
             </Title>
             <IcoContainer>
-                <a href="http://www.github.com">
+                <a href="http://www.github.com/Lewisjohnward" target="_blank">
                     <GitIco />
                 </a>
                 <Button>
