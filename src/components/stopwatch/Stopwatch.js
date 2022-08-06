@@ -3,6 +3,10 @@ import styled from "styled-components"
 import {useContext} from "react"
 import {ThemeContext} from "styled-components"
 import {renderTime} from "../../helpers/functions"
+import {Laps} from "./components/Laps"
+import {v4 as uuidv4} from "uuid"
+import {HR} from "../../styled/HR.styled"
+import randomColor from "randomcolor"
 
 const StopwatchContainer = styled.div`
     box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.3);
@@ -27,9 +31,10 @@ const Button = styled.button`
     font-size: 1rem;
     padding: 5px 10px;
     border-radius: 3px;
+    opacity: ${({running}) => running ? `1` : `0.5`};
 
     &:hover{
-        cursor: pointer;
+        cursor: ${({running}) => running ? `pointer` : `normal`};
     }
 `
 
@@ -38,12 +43,43 @@ const Text = styled.div`
     font-size: 1.5rem;
 `
 
+const MsSpan = styled.span`
+    font-size: 1.2rem;
+`
+
 export const Stopwatch = () => {
+    const [laps, setLaps] = useState([])
+
+    return (
+        <>
+        <Text>Stopwatch</Text>
+            <Display laps={laps} setLaps={setLaps} />
+            <HR />
+            <Text>Laps</Text>
+            <Laps laps={laps} setLaps={setLaps} />
+        </>
+    )
+}
+
+const Display = ({laps, setLaps}) => {
     const [time, setTime] = useState(0)
     const [running, setRunning] = useState(false)
 
-
     const themeContext = useContext(ThemeContext)
+
+    const handleUpdateLaps = () => {
+        if (!running) return
+        const [hours, mins, secs, ms] = renderTime(time, timeoutSpeed)
+        const lapObj = {
+            id: uuidv4(),
+            color: randomColor(),
+            hours,
+            mins,
+            secs,
+            ms
+        }
+        setLaps(prev => [...prev, lapObj])
+    }
 
     const handleStart = () => {
         setRunning(true)
@@ -72,24 +108,42 @@ export const Stopwatch = () => {
         running && setTimeout(incrementTime, timeoutSpeed)
     }, [running, time])
 
-    const [hours, mins, secs, mj] = renderTime(time, timeoutSpeed)
-
+    const [hours, mins, secs, ms] = renderTime(time, timeoutSpeed)
+    const timeStr = <>{hours}:{mins}:{secs}<MsSpan>{ms}</MsSpan></>
 
     return (
         <>
-        <Text>Stopwatch</Text>
-        <StopwatchContainer>
-            {hours}:{mins}:{secs}
-        </StopwatchContainer>
+            <StopwatchContainer>
+                {timeStr}
+            </StopwatchContainer>
             <ButtonContainer>
-                <Button background={themeContext.button.start_green} onClick={() => handleStart()}>
+                <Button 
+                    running={!running}
+                    background={themeContext.button.start_green} 
+                    onClick={() => handleStart()}
+                >
                     Start
                 </Button>
-                <Button background={themeContext.button.stop_blue} onClick={() => handleStop()}>
+                <Button 
+                    running={running}
+                    background={themeContext.button.stop_blue} 
+                    onClick={() => handleStop()}
+                >
                     Stop
                 </Button>
-                <Button background={themeContext.button.reset_red} onClick={() => handleReset()}>
+                <Button 
+                    running={time > 0}
+                    background={themeContext.button.reset_red} 
+                    onClick={() => handleReset()}
+                >
                     Reset
+                </Button>
+                <Button 
+                    running={running}
+                    background={themeContext.orange} 
+                    onClick={() => handleUpdateLaps()}
+                >
+                    Lap
                 </Button>
             </ButtonContainer>
         </>

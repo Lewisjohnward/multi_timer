@@ -11,7 +11,7 @@ const ErrorContainer = styled.div`
     text-align: center;
     border: 1px solid #fc3003;
     border-radius: 3px 3px 0px 0px;
-    background: #b5533e;
+    background: ${({theme}) => theme.button.reset_red};
     padding: 3px 5px;
     margin-left: 100px;
     color: white;

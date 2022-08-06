@@ -81,7 +81,7 @@ const TimeSelectContainer = styled.div`
         margin: 0px 3px;
         border-radius: 3px;
         cursor: pointer;
-        box-shadow: 0px 1px 4px inset rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 1px inset rgba(0, 0, 0, 0.3);
 
         &:hover{
             background: ${darkblack};

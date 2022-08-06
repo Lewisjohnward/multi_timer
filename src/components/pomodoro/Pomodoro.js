@@ -1,5 +1,7 @@
 import {useState} from "react"
 import styled from "styled-components"
+import {Sequence} from "./components/Sequence"
+import {HR} from "../../styled/HR.styled"
 
 const  blue = "#4d2f8f"
 const green = "#27cf2d" 
@@ -17,6 +19,7 @@ const Input = styled.input`
     border-radius: 3px;
     padding: 14px 14px;
     text-align: right;
+    box-shadow: 0px 1px 1px inset rgba(0, 0, 0, 0.3);
 `
 const Button = styled.button`
     background: ${green};
@@ -32,6 +35,17 @@ const Text = styled.div`
 
 export const Pomodoro = () => {
     const [pomodoro, setPomodoro] = useState("1+3+1")
+    const [sequence, setSequence] = useState([])
+
+    const handleInput = (e) => {
+        setPomodoro(e.target.value)
+    }
+
+    const handleStartSequence = () => {
+        const arr = pomodoro.split("+")
+        setSequence(arr)
+    }
+
     return (
         <>
             <Text>Pomodoro Timer</Text>
@@ -40,10 +54,16 @@ export const Pomodoro = () => {
             </Banner>
             <Input 
                 value={pomodoro}
+                onFocus={() => setPomodoro("")}
+                onChange={(e) => handleInput(e)}
             />
-            <Button>
+            <Button onClick={() => handleStartSequence()}>
                 Start a sequence
             </Button>
+            <Sequence sequence={sequence}/>
+            <HR />
+            <Text>Add a sequence quickly using the shortcuts below</Text>
+            <HR />
         </>
     )
 }

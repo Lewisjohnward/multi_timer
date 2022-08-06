@@ -14,9 +14,15 @@ const Container = styled.div`
 
 const BodyContainer = styled.div`
     margin-top 25px;
+    min-width: 1000px;
 
     > * {
         margin-bottom: 25px;
+    }
+
+
+    &:hover{
+        cursor: default;
     }
 
 `
