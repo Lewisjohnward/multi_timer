@@ -2,8 +2,10 @@
 
 * **Timer**, **Stopwatch** and **Pomodoro Timer**.
 
-- [] Make pomododoro timer functional
-- [] Media queries for smaller screens
+- [x] Make Timer functional
+- [x] Make stopwatch functional
+- [ ] Make pomododoro timer functional
+- [ ] Media queries for smaller screens
 
 - - -
 © 2022 Wedge Web Design. All Rights Reserved.
