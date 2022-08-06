@@ -20,6 +20,16 @@ const theme = {
 
 const Container = styled.div`
     margin: 0px 400px;
+
+    @media (max-width: 800px)
+    {
+        margin: 0px 100px;
+    }
+
+    @media (max-width: 500px)
+    {
+        margin: 0px 50px;
+    }
 `
 
 const App = () => {

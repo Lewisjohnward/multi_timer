@@ -62,9 +62,9 @@ export const Banner = () => {
                 <StopwatchIco />
             </Title>
             <IcoContainer>
-                <Button>
+                <a href="http://www.github.com">
                     <GitIco />
-                </Button>
+                </a>
                 <Button>
                     <LinkedIco />
                 </Button>

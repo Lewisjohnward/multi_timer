@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import {SimpleTimer} from "../simpletimer/SimpleTimer"
 import {Pomodoro} from "../pomodoro/Pomodoro"
-import {Link, Route, Routes} from "react-router-dom"
+import {Link, Route, Routes, Navigate} from "react-router-dom"
 import {Stopwatch} from "../stopwatch/Stopwatch"
 
 const border = "1px solid rgba(0, 0, 0, 0.1);"
@@ -55,6 +55,7 @@ export const Page = () => {
                     <Route path="/" element={<SimpleTimer />} />
                     <Route path="/pomodoro" element={<Pomodoro />}/>
                     <Route path="/stopwatch" element={<Stopwatch />}/>
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </BodyContainer>
         </Frame>
