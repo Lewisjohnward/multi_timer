@@ -2,91 +2,16 @@ import {useState, useEffect, useRef} from "react"
 import styled from "styled-components"
 import {Timer} from "./components/Timer"
 import {Alarm} from "./components/Alarm"
+import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Option, RingTimeContainer, Slider, Dropdown, TimeSelectContainer} from "../../styled/Preset.styled.js"
 
 const orange = "#eb4934"
 const blue = "#30b1cf"
-const gray = "#f0f2f0"
-const darkgray = "#d7dadb"
-const black = "#6b6464"
-const darkblack = "#524f4e"
 
 const Text = styled.div`
     color: ${({theme}) => `${theme.orange};`}
     font-size: 1.5rem;
 `
 
-const PresetTimeContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 200px);
-    grid-gap: 5px;
-`
-const PresetTime = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 5px 40px;
-    background: ${gray};
-    font-size: 0.9rem;
-
-    &:hover{
-        cursor: pointer;
-        background: ${darkgray};
-    }
-`
-
-const SettingsContainer = styled.div`
-    background: ${gray};
-    padding: 5px 10px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
-    
-    > * {
-        margin-bottom: 20px;
-    }
-  
-`
-
-const OptionContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 500px;
-`
-const Option = styled.div`
-`
-const RingTimeContainer = styled.div`
-    display: flex;
-    color: white;
-`
-const Slider = styled.input.attrs(
-    props => {
-        return ({
-            type: 'range',
-            min: '0',
-            max: '100',
-            value: props.slideValue
-        })
-    }
-)`
-    height: 5px;
-    background: ${blue};
-`
-
-const Dropdown = styled.select`
-`
-const TimeSelectContainer = styled.div`
-        background: ${({background, theme}) => background ? theme.orange : `${black}`};
-        padding: 8px 10px;
-        margin: 0px 3px;
-        border-radius: 3px;
-        cursor: pointer;
-        box-shadow: 0px 1px 1px inset rgba(0, 0, 0, 0.3);
-
-        &:hover{
-            background: ${darkblack};
-        }
-`
 
 export const SimpleTimer = () => {
     const [time, setTime] = useState(300)

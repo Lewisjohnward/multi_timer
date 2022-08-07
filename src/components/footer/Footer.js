@@ -11,7 +11,7 @@ const Container = styled.div`
     font-weight: 200;
 `
 
-const Text = styled.text``
+const Text = styled.p``
 
 export const Footer = () => {
     return (

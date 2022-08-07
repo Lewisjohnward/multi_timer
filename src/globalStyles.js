@@ -15,7 +15,9 @@ const GlobalStyle = createGlobalStyle`
     all: unset;
     }
     
-    button {
+    button, h1,p {
+        margin: 0;
+        padding: 0;
         border: none;
         background: none;
         font-size: 1rem;

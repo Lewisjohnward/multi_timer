@@ -20,6 +20,7 @@ const Title = styled.div`
 
     > * {
         margin-right: 20px;
+        font-size: 2rem;
     }
 `
 
@@ -58,7 +59,7 @@ export const Banner = () => {
     return (
         <Container>
             <Title>
-                <text>Multi Timer </text>
+                <h1>Multi Timer </h1>
                 <StopwatchIco />
             </Title>
             <IcoContainer>

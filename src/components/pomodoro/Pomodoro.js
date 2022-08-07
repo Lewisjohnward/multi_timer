@@ -2,6 +2,7 @@ import {useState} from "react"
 import styled from "styled-components"
 import {Sequence} from "./components/Sequence"
 import {HR} from "../../styled/HR.styled"
+import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Option, RingTimeContainer, Slider, Dropdown, TimeSelectContainer} from "../../styled/Preset.styled.js"
 
 const  blue = "#4d2f8f"
 const green = "#27cf2d" 
@@ -36,15 +37,23 @@ const Text = styled.div`
 export const Pomodoro = () => {
     const [pomodoro, setPomodoro] = useState("1+3+1")
     const [sequence, setSequence] = useState([])
+    const [running, setRunning] = useState(false)
+
+    const validateInput = () => {
+        //TODO
+    }
 
     const handleInput = (e) => {
         setPomodoro(e.target.value)
     }
 
     const handleStartSequence = () => {
-        const arr = pomodoro.split("+")
+        const arr = pomodoro.split("+").map(d => d * 60)
         setSequence(arr)
+        setRunning(true)
     }
+
+    const presetTimeArr = new Array(15).fill(0).map((d, i) => 30 + (i * 30))
 
     return (
         <>
@@ -60,10 +69,13 @@ export const Pomodoro = () => {
             <Button onClick={() => handleStartSequence()}>
                 Start a sequence
             </Button>
-            <Sequence sequence={sequence}/>
+            <Sequence sequence={sequence} running={running} setRunning={setRunning}/>
             <HR />
             <Text>Add a sequence quickly using the shortcuts below</Text>
             <HR />
+            <PresetTimeContainer>
+            {presetTimeArr.map(d => <PresetTime>{d}</PresetTime>)}
+            </PresetTimeContainer>
         </>
     )
 }

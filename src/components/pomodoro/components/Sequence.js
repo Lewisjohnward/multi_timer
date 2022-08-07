@@ -4,7 +4,7 @@ import styled from "styled-components"
 const Container = styled.div`
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: 15px;
-    display: flex;
+    display: ${({display}) => display ? "flex" : "none"};
 `
 
 const Bar = styled.div`
@@ -15,32 +15,47 @@ const Text = styled.text`
     padding: 10px 20px;
 `
 
-export const Sequence = () => {
-    const sequence = "1+3+1".split("+")
+export const Sequence = ({sequence, running, setRunning}) => {
     const [position, setPosition] = useState(0)
     const [count, setCount] = useState(0)
-    const [running, setRunning] = useState(true)
     const [current, setCurrent] = useState()
 
     const incrementCount = () => setCount(prev => prev + 1)
+    const zeroCount = () => setCount(0)
+
+    const checkTimerEnd = () => {
+        if (sequence[position] - count == 0) {
+            setPosition(prev => prev + 1)
+            setCount(0)
+        }
+    }
+
+    const haveWeFinished = () => {
+        if (position > sequence.length - 1){
+            setRunning(false)
+            setTimeout(zeroCount, 100)
+        }   
+    }
 
     useEffect(() => {
-        running && setTimeout(incrementCount, 1000)
+        running && setTimeout(incrementCount, 100)
+        checkTimerEnd()
     }, [count, running])
 
+    useEffect(() => {
+        haveWeFinished()
+    }, [position])
 
 
     return (
         <>
-            {count}
-            {position}
             {sequence.map((d, i ) => {
-
+                const display = position <= i ? true : false
                 return (
-                    <Container>
+                    <Container display={display}>
                         <Bar />
                         <Text>
-                            {(d * 60) - count}
+                            {position == i ? (d) - count : position < i ? d : 0}
                         </Text>
                     </Container>
                 )
