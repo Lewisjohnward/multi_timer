@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useState, useContext} from "react"
 import styled from "styled-components"
 import {Sequence} from "./components/Sequence"
 import {HR} from "../../styled/HR.styled"
@@ -6,6 +6,7 @@ import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Opt
 
 const  blue = "#4d2f8f"
 const green = "#27cf2d" 
+const red = "#e8063c"
 
 const Banner = styled.div`
     background: ${blue};
@@ -23,8 +24,8 @@ const Input = styled.input`
     box-shadow: 0px 1px 1px inset rgba(0, 0, 0, 0.3);
 `
 const Button = styled.button`
-    background: ${green};
-    padding: 10px 14px;
+    background: ${({background}) => background};
+    padding: 5px 10px;
     border-radius: 5px;
     color: white;
     cursor: pointer;
@@ -34,10 +35,17 @@ const Text = styled.div`
     font-size: 1.5rem;
 `
 
+const ButtonContainer = styled.div`
+    > * {
+        margin-right: 25px;
+    }
+`
+
 export const Pomodoro = () => {
     const [pomodoro, setPomodoro] = useState("1+3+1")
     const [sequence, setSequence] = useState([])
     const [running, setRunning] = useState(false)
+
 
     const validateInput = () => {
         //TODO
@@ -53,6 +61,10 @@ export const Pomodoro = () => {
         setRunning(true)
     }
 
+    const handleStopSequence = () => {
+        alert("handle stop")
+    }
+
     const presetTimeArr = new Array(15).fill(0).map((d, i) => 30 + (i * 30))
 
     return (
@@ -66,9 +78,14 @@ export const Pomodoro = () => {
                 onFocus={() => setPomodoro("")}
                 onChange={(e) => handleInput(e)}
             />
-            <Button onClick={() => handleStartSequence()}>
+            <ButtonContainer>
+                <Button background={green} onClick={() => handleStartSequence()}>
                 Start a sequence
-            </Button>
+                </Button>
+                <Button background={red} onClick={() => handleStopSequence()}>
+                Stop
+                </Button>
+            </ButtonContainer>
             <Sequence sequence={sequence} running={running} setRunning={setRunning}/>
             <HR />
             <Text>Add a sequence quickly using the shortcuts below</Text>
