@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react"
 import styled from "styled-components"
+import {DeleteIco} from "../../../styled/Ico.styled.js"
 
 const Container = styled.div`
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
@@ -11,6 +12,16 @@ const Bar = styled.div`
     background: pink;
     width: 5px;
 `
+
+const TextContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 25px;
+`
+
 const Text = styled.text`
     padding: 10px 20px;
 `
@@ -46,6 +57,10 @@ export const Sequence = ({sequence, running, setRunning}) => {
         haveWeFinished()
     }, [position])
 
+    const handleDelete = () => {
+        alert("DELETE FUNCTIONALITY NEEDED")
+    }
+
 
     return (
         <>
@@ -54,9 +69,12 @@ export const Sequence = ({sequence, running, setRunning}) => {
                 return (
                     <Container display={display}>
                         <Bar />
-                        <Text>
-                            {position == i ? (d) - count : position < i ? d : 0}
-                        </Text>
+                        <TextContainer>
+                            <Text>
+                                {position == i ? (d) - count : position < i ? d : 0}
+                            </Text>
+                            <DeleteIco onClick={() => handleDelete()}/>
+                        </TextContainer>
                     </Container>
                 )
             })}
