@@ -33,12 +33,12 @@ export const Sequence = ({sequence, running, setRunning}) => {
     const haveWeFinished = () => {
         if (position > sequence.length - 1){
             setRunning(false)
-            setTimeout(zeroCount, 100)
+            setTimeout(zeroCount, 1000)
         }   
     }
 
     useEffect(() => {
-        running && setTimeout(incrementCount, 100)
+        running && setTimeout(incrementCount, 1000)
         checkTimerEnd()
     }, [count, running])
 
