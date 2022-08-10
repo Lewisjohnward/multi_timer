@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
 import styled from "styled-components"
 import {DeleteIco} from "../../../styled/Ico.styled.js"
+import {renderTimeb} from "../../../helpers/functions"
 
 const Button = styled.button`
     background: ${({theme}) => theme.button.reset_red};
@@ -91,7 +92,7 @@ export const Sequence = ({sequence, setSequence, running, setRunning}) => {
                         <Bar />
                         <TextContainer>
                             <Text>
-                                {position == i ? (d.time) - count : position < i ? d.time : 0}
+                                {renderTimeb(position == i ? (d.time) - count : position < i ? d.time : 0)}
                             </Text>
                             <DeleteIco onClick={() => handleDelete(d.id)}/>
                         </TextContainer>
