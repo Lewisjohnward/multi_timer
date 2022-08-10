@@ -2,10 +2,20 @@ import {useState, useEffect} from "react"
 import styled from "styled-components"
 import {DeleteIco} from "../../../styled/Ico.styled.js"
 
+const Button = styled.button`
+    background: ${({theme}) => theme.button.reset_red};
+    color: white;
+    border-radius: 3px;
+    padding: 4px 8px;
+
+    &:hover{
+        cursor: pointer;
+   }
+`
 const Container = styled.div`
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: 15px;
-    display: ${({display}) => display ? "flex" : "none"};
+    display: ${({dis}) => dis ? "flex" : "none"};
 `
 
 const Bar = styled.div`
@@ -22,11 +32,11 @@ const TextContainer = styled.div`
     padding-right: 25px;
 `
 
-const Text = styled.text`
+const Text = styled.p`
     padding: 10px 20px;
 `
 
-export const Sequence = ({sequence, running, setRunning}) => {
+export const Sequence = ({sequence, setSequence, running, setRunning}) => {
     const [position, setPosition] = useState(0)
     const [count, setCount] = useState(0)
     const [current, setCurrent] = useState()
@@ -57,23 +67,33 @@ export const Sequence = ({sequence, running, setRunning}) => {
         haveWeFinished()
     }, [position])
 
-    const handleDelete = () => {
-        alert("DELETE FUNCTIONALITY NEEDED")
+    const handleDelete = (id) => {
+        const filteredArr = sequence.filter(a => a.id != id)
+        setSequence(filteredArr)
+    }
+
+    const handleDeleteAll = (id) => {
+        setSequence([])
+        setRunning(false)
     }
 
 
     return (
         <>
+            {
+                sequence.length > 0 &&
+                    <Button onClick={() => handleDeleteAll()}>Delete all </Button>
+            }
             {sequence.map((d, i ) => {
                 const display = position <= i ? true : false
                 return (
-                    <Container display={display}>
+                    <Container dis={display} key={d.id}>
                         <Bar />
                         <TextContainer>
                             <Text>
-                                {position == i ? (d) - count : position < i ? d : 0}
+                                {position == i ? (d.time) - count : position < i ? d.time : 0}
                             </Text>
-                            <DeleteIco onClick={() => handleDelete()}/>
+                            <DeleteIco onClick={() => handleDelete(d.id)}/>
                         </TextContainer>
                     </Container>
                 )
