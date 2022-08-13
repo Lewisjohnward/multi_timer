@@ -66,12 +66,12 @@ export const Banner = () => {
                 <a href="http://www.github.com/Lewisjohnward" target="_blank">
                     <GitIco />
                 </a>
-                <Button>
+                <a href="#">
                     <LinkedIco />
-                </Button>
-                <Button>
+                </a>
+                <a href="#">
                     <DocIco />
-                </Button>
+                </a>
             </IcoContainer>
         </Container>
     )
