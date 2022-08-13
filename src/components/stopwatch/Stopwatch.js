@@ -7,6 +7,7 @@ import {Laps} from "./components/Laps"
 import {v4 as uuidv4} from "uuid"
 import {HR} from "../../styled/HR.styled"
 import randomColor from "randomcolor"
+import {Button} from "../../styled/Button.styled.js"
 
 const StopwatchContainer = styled.div`
     box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.3);
@@ -25,18 +26,6 @@ const ButtonContainer = styled.div`
     }
 `
 
-const Button = styled.button`
-    background: ${({background}) => `${background}`};
-    color: white;
-    font-size: 1rem;
-    padding: 5px 10px;
-    border-radius: 3px;
-    opacity: ${({running}) => running ? `1` : `0.5`};
-
-    &:hover{
-        cursor: ${({running}) => running ? `pointer` : `normal`};
-    }
-`
 
 const Text = styled.div`
     color: ${({theme}) => `${theme.orange};`}

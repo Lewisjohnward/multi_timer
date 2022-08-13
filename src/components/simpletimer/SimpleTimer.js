@@ -3,6 +3,7 @@ import styled from "styled-components"
 import {Timer} from "./components/Timer"
 import {Alarm} from "./components/Alarm"
 import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Option, RingTimeContainer, Slider, Dropdown, TimeSelectContainer} from "../../styled/Preset.styled.js"
+import {renderTimeb} from "../../helpers/functions"
 
 const orange = "#eb4934"
 const blue = "#30b1cf"
@@ -34,13 +35,6 @@ export const SimpleTimer = () => {
             else return i * 5
         })
         return arr
-    }
-
-    const renderTime = (d) => {
-        const minutes = Math.floor(d / 60)
-        const seconds = d - (minutes * 60)
-        if (!minutes) return `${seconds}s`
-        else return `${minutes}m ${seconds}s`
     }
 
     const handleTime = (d) => {
@@ -76,6 +70,7 @@ export const SimpleTimer = () => {
     }
 
 
+
     return (
         <>
             <Alarm time={time} ringTime={ringTime} alarm={alarm} volume={slideValue}/>
@@ -83,7 +78,7 @@ export const SimpleTimer = () => {
             <Timer time={time} setTime={setTime} setRunning={setRunning} running={running} resetTime={resetTime}/>
             <Text color={blue}>Start a timer quickly</Text>
             <PresetTimeContainer>
-                {generateTimes().map(d => <PresetTime onClick={() => handleTime(d)}>{renderTime(d)}</PresetTime>)}
+                {generateTimes().map(d => <PresetTime onClick={() => handleTime(d)}>{renderTimeb(d)}</PresetTime>)}
             </PresetTimeContainer>
             <SettingsContainer>
                 <Text color={orange}>Settings</Text>

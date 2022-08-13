@@ -19,3 +19,10 @@ export const renderTime = (time, speed) => {
 }
 
 const formatTime = (val) => val < 10 ? "0" + val : val
+
+export const renderTimeb = (d) => {
+    const minutes = Math.floor(d / 60)
+    const seconds = d - (minutes * 60)
+    if (!minutes) return `${seconds}s`
+    else return `${minutes}m ${seconds}s`
+}

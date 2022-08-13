@@ -1,25 +1,22 @@
 import styled from "styled-components"
-import {RiDeleteBin2Line} from "react-icons/ri"
+import {DeleteIco} from "../../../styled/Ico.styled.js"
 
 const Container = styled.div`
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
     display: flex;
     border-left: 5px solid ${({background}) => background};
 `
 const TextContainer = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 20px;
 `
 const Text = styled.text`
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     margin-left: 10px;
-    padding: 5px;
-`
-const DeleteIco = styled(RiDeleteBin2Line)`
-    cursor: pointer;
-    font-size: 1.2rem;
 `
 const Button = styled.button`
     background: ${({theme}) => theme.button.reset_red};

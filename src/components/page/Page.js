@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import {SimpleTimer} from "../simpletimer/SimpleTimer"
 import {Pomodoro} from "../pomodoro/Pomodoro"
-import {Link, Route, Routes, Navigate} from "react-router-dom"
+import {Link, Route, Routes, Navigate, useLocation} from "react-router-dom"
 import {Stopwatch} from "../stopwatch/Stopwatch"
 
 const border = "1px solid rgba(0, 0, 0, 0.1);"
@@ -34,6 +34,7 @@ const Button = styled.button`
     border-radius: 3px 3px 0px 0px;
     font-weight: 800;
     font-size: 1.5rem;
+    border-bottom: 2px solid  ${({active}) => active ? "rgba(0, 0, 0, 0.2)" : "white"};
 
     &:hover{
         background: rgba(0, 0, 0, 0.1);
@@ -43,12 +44,14 @@ const Button = styled.button`
 `
 
 export const Page = () => {
+    const pathname = useLocation().pathname
+
     return (
         <Frame>
             <Container>
-                <Link to="/"><Button>Simple Timer</Button></Link>
-                <Link to="/pomodoro"><Button>Pomodoro Timer</Button></Link>
-                <Link to="/stopwatch"><Button>Stopwatch</Button></Link>
+                <Link to="/" ><Button active={pathname == "/"}>Simple Timer</Button></Link>
+                <Link to="/pomodoro" ><Button active={pathname == "/pomodoro"}>Pomodoro Timer</Button></Link>
+                <Link to="/stopwatch" ><Button active={pathname == "/stopwatch"}>Stopwatch</Button></Link>
             </Container>
             <BodyContainer>
                 <Routes>

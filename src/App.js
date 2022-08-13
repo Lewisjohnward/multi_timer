@@ -41,7 +41,6 @@ const App = () => {
                     <Page />
                 </Container>
                 <Error />
-            <Footer />
         </ThemeProvider>
     )
 }
