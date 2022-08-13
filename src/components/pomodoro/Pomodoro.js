@@ -4,6 +4,8 @@ import {Sequence} from "./components/Sequence"
 import {HR} from "../../styled/HR.styled"
 import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Option, RingTimeContainer, Slider, Dropdown, TimeSelectContainer} from "../../styled/Preset.styled.js"
 import {Button} from "../../styled/Button.styled.js"
+import {renderTimeb} from "../../helpers/functions"
+import {v4 as uuidv4} from "uuid"
 
 const orange = "#eb4934"
 const  blue = "#4d2f8f"
@@ -40,6 +42,7 @@ export const Pomodoro = () => {
     const [pomodoro, setPomodoro] = useState("1+3+1")
     const [sequence, setSequence] = useState([])
     const [running, setRunning] = useState(false)
+    const [inputError, setInputError] = useState(false)
     const [ringTime, setRingTime] = useState(false)
     const [slideValue, setSlideValue] = useState(20)
     const [alarm, setAlarm] = useState("beep")
@@ -61,27 +64,60 @@ export const Pomodoro = () => {
     }
 
 
-    const validateInput = () => {
-        //TODO
+    const validateInput = (value) => {
+        let bool = false
+        let prevPlus = false
+
+        value.split("").forEach(d => {
+            if (Number.isInteger(+d)){
+                bool = true
+                prevPlus = false
+            }
+
+            if(!prevPlus && !bool) {
+                bool = d == "+"
+                prevPlus = true
+            }        
+        })
+
+        return bool
     }
 
+
     const handleInput = (e) => {
-        setPomodoro(e.target.value)
+        const bool = validateInput(e.target.value)
+        bool && setPomodoro(e.target.value)
     }
 
     const handleStartSequence = () => {
-        const arr = pomodoro.split("+").map(d => d * 60)
+        if (pomodoro == "" ) return
+        let arr = pomodoro.split("+").map(d => d * 60)
+        arr = arr.map(d => {
+            return (
+                {
+                    id: uuidv4(),
+                    time: d
+                }
+            )
+        })
+
         setSequence(arr)
         setRunning(true)
     }
 
     const handleStopSequence = () => {
-        alert("NEED TO MAKE IT SO IT DOESN'T GO DOWN")
         setRunning(false)
     }
 
     const handleSelectPresetTime = (d) => {
-        setSequence(prev => [...prev, d])
+        const obj = {
+            id: uuidv4(),
+            time: d
+        }
+        setSequence(prev => [...prev, obj])
+    }
+    const validate = () => {
+        if (pomodoro == "") setPomodoro("1+3+1")
     }
 
     const presetTimeArr = new Array(15).fill(0).map((d, i) => 30 + (i * 30))
@@ -96,6 +132,7 @@ export const Pomodoro = () => {
                 value={pomodoro}
                 onFocus={() => setPomodoro("")}
                 onChange={(e) => handleInput(e)}
+                onBlur={() => validate()}
             />
             <ButtonContainer>
                 <Button running={!running} background={green} onClick={() => handleStartSequence()}>
@@ -108,12 +145,12 @@ export const Pomodoro = () => {
                     Reset
                 </Button>
             </ButtonContainer>
-            <Sequence sequence={sequence} running={running} setRunning={setRunning}/>
+            <Sequence sequence={sequence} setSequence={setSequence} running={running} setRunning={setRunning}/>
             <HR />
             <Text>Add a sequence quickly using the shortcuts below</Text>
             <HR />
             <PresetTimeContainer>
-                {presetTimeArr.map(d => <PresetTime onClick={() => handleSelectPresetTime(d)}>{d}</PresetTime>)}
+                {presetTimeArr.map(d => <PresetTime key={uuidv4()} onClick={() => handleSelectPresetTime(d)}>{renderTimeb(d)}</PresetTime>)}
             </PresetTimeContainer>
             <SettingsContainer>
                 <Text color={orange}>Settings</Text>
@@ -122,7 +159,7 @@ export const Pomodoro = () => {
                         How long should the alarm ring for
                     </Option>
                     <RingTimeContainer>
-                        {ringTimes().map(d => <TimeSelectContainer background={ringTime == d ? true : false} onClick={() => handleSelectRingTime(d)}>{d}s</TimeSelectContainer>)}
+                        {ringTimes().map(d => <TimeSelectContainer key={uuidv4()} background={ringTime == d ? true : false} onClick={() => handleSelectRingTime(d)}>{d}s</TimeSelectContainer>)}
                     </RingTimeContainer>
                 </OptionContainer>
                 <OptionContainer>
