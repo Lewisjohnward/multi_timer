@@ -71,11 +71,14 @@ export const Sequence = ({sequence, setSequence, running, setRunning}) => {
     const handleDelete = (id) => {
         const filteredArr = sequence.filter(a => a.id != id)
         setSequence(filteredArr)
+        setRunning(false)
+        setTimeout(zeroCount, 1100)
     }
 
     const handleDeleteAll = (id) => {
         setSequence([])
         setRunning(false)
+        setTimeout(zeroCount, 1100)
     }
 
 
@@ -85,6 +88,7 @@ export const Sequence = ({sequence, setSequence, running, setRunning}) => {
                 sequence.length > 0 &&
                     <Button onClick={() => handleDeleteAll()}>Delete all </Button>
             }
+            {count}
             {sequence.map((d, i ) => {
                 const display = position <= i ? true : false
                 return (
