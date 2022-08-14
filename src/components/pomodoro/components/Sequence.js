@@ -2,6 +2,7 @@ import {useState, useEffect} from "react"
 import styled from "styled-components"
 import {DeleteIco} from "../../../styled/Ico.styled.js"
 import {renderTimeb} from "../../../helpers/functions"
+import {BsFillBellFill, BsFillBellSlashFill} from "react-icons/bs"
 
 const Button = styled.button`
     background: ${({theme}) => theme.button.reset_red};
@@ -37,10 +38,42 @@ const Text = styled.p`
     padding: 10px 20px;
 `
 
+const BellContainer = styled.div`
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    > * {
+        cursor: pointer;
+    }
+`
+
+const BellOnIco = styled(BsFillBellFill)`
+
+`
+
+const BellOfIco = styled(BsFillBellSlashFill)`
+
+`
+
+const SettingsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > * {
+        margin-right: 30px;
+    }
+`
+
 export const Sequence = ({sequence, setSequence, running, setRunning}) => {
     const [position, setPosition] = useState(0)
     const [count, setCount] = useState(0)
     const [current, setCurrent] = useState()
+
+    const [alarm, setAlarm] = useState(false)
 
     const incrementCount = () => setCount(prev => prev + 1)
     const zeroCount = () => setCount(0)
@@ -81,14 +114,22 @@ export const Sequence = ({sequence, setSequence, running, setRunning}) => {
         setTimeout(zeroCount, 1100)
     }
 
+    const handleToggleBell = () => {
+        setAlarm(prev => !prev)
+    }
+
 
     return (
         <>
-            {
-                sequence.length > 0 &&
-                    <Button onClick={() => handleDeleteAll()}>Delete all </Button>
-            }
-            {count}
+            <SettingsContainer>
+                {
+                    sequence.length > 0 &&
+                        <Button onClick={() => handleDeleteAll()}>Delete all </Button>
+                }
+                <BellContainer onClick={() => handleToggleBell()}>
+                    {alarm ? <BellOnIco /> : <BellOfIco />}
+                </BellContainer>
+            </SettingsContainer>
             {sequence.map((d, i ) => {
                 const display = position <= i ? true : false
                 return (
