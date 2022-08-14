@@ -2,9 +2,9 @@ import {useState, useContext} from "react"
 import styled from "styled-components"
 import {Sequence} from "./components/Sequence"
 import {HR} from "../../styled/HR.styled"
-import {PresetTimeContainer, PresetTime, SettingsContainer, OptionContainer, Option, RingTimeContainer, Slider, Dropdown, TimeSelectContainer} from "../../styled/Preset.styled.js"
 import {Button} from "../../styled/Button.styled.js"
 import {renderTimeb} from "../../helpers/functions"
+import {PresetTimeContainer, PresetTime} from "../../styled/Preset.styled.js"
 import {v4 as uuidv4} from "uuid"
 
 const orange = "#eb4934"
@@ -43,37 +43,21 @@ export const Pomodoro = () => {
     const [sequence, setSequence] = useState([])
     const [running, setRunning] = useState(false)
     const [inputError, setInputError] = useState(false)
-    const [ringTime, setRingTime] = useState(false)
-    const [slideValue, setSlideValue] = useState(20)
-    const [alarm, setAlarm] = useState("beep")
 
 
-    const handleSelectRingTime = (d) => {
-        setRingTime(d)
-    }
-
-    const handleVolumeSlider = (e) => {
-        setSlideValue(e.target.value)
-    }
-    const ringTimes = () => {
-        const arr = new Array(4).fill(0).map((d, i) => { 
-            if (i == 0) return 2
-            else return i * 5
-        })
-        return arr
-    }
 
 
     const validateInput = (value) => {
         let bool = false
-        let prevPlus = false
+        let prevPlus = true
 
         value.split("").forEach(d => {
             if (Number.isInteger(+d)){
                 bool = true
                 prevPlus = false
+            }else{
+                bool = false
             }
-
             if(!prevPlus && !bool) {
                 bool = d == "+"
                 prevPlus = true
@@ -100,7 +84,6 @@ export const Pomodoro = () => {
                 }
             )
         })
-
         setSequence(arr)
         setRunning(true)
     }
@@ -152,32 +135,6 @@ export const Pomodoro = () => {
             <PresetTimeContainer>
                 {presetTimeArr.map(d => <PresetTime key={uuidv4()} onClick={() => handleSelectPresetTime(d)}>{renderTimeb(d)}</PresetTime>)}
             </PresetTimeContainer>
-            <SettingsContainer>
-                <Text color={orange}>Settings</Text>
-                <OptionContainer>
-                    <Option>
-                        How long should the alarm ring for
-                    </Option>
-                    <RingTimeContainer>
-                        {ringTimes().map(d => <TimeSelectContainer key={uuidv4()} background={ringTime == d ? true : false} onClick={() => handleSelectRingTime(d)}>{d}s</TimeSelectContainer>)}
-                    </RingTimeContainer>
-                </OptionContainer>
-                <OptionContainer>
-                    <Option>
-                        How loud should the alarm be
-                    </Option>
-                    <Slider slideValue={slideValue} onChange={(e) => handleVolumeSlider(e)}/>
-                </OptionContainer>
-                <OptionContainer>
-                    <Option>
-                        Choose alarm sound
-                    </Option>
-                    <Dropdown onChange={(e) => setAlarm(e.target.value)}>
-                        <option value="beep">Beep</option>
-                        <option value="soft">Soft</option>
-                    </Dropdown>
-                </OptionContainer>
-            </SettingsContainer>
         </>
     )
 }

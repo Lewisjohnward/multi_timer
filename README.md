@@ -2,9 +2,15 @@
 
 * **Timer**, **Stopwatch** and **Pomodoro Timer**.
 
+## Built with
+
+- React
+- Styled Components
+
+## Todo
 - [x] Make Timer functional
 - [x] Make stopwatch functional
-- [ ] Make pomododoro timer functional
+- [x] Make pomododoro timer functional
 - [ ] Media queries for smaller screens
 
 - - -
