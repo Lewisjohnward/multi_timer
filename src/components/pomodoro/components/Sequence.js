@@ -2,7 +2,6 @@ import {useState, useEffect} from "react"
 import styled from "styled-components"
 import {DeleteIco} from "../../../styled/Ico.styled.js"
 import {renderTimeb} from "../../../helpers/functions"
-import {BsFillBellFill, BsFillBellSlashFill} from "react-icons/bs"
 
 const Button = styled.button`
     background: ${({theme}) => theme.button.reset_red};
@@ -36,26 +35,6 @@ const TextContainer = styled.div`
 
 const Text = styled.p`
     padding: 10px 20px;
-`
-
-const BellContainer = styled.div`
-    font-size: 1.5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    > * {
-        cursor: pointer;
-    }
-`
-
-const BellOnIco = styled(BsFillBellFill)`
-
-`
-
-const BellOfIco = styled(BsFillBellSlashFill)`
-
 `
 
 const SettingsContainer = styled.div`
@@ -126,9 +105,6 @@ export const Sequence = ({sequence, setSequence, running, setRunning}) => {
                     sequence.length > 0 &&
                         <Button onClick={() => handleDeleteAll()}>Delete all </Button>
                 }
-                <BellContainer onClick={() => handleToggleBell()}>
-                    {alarm ? <BellOnIco /> : <BellOfIco />}
-                </BellContainer>
             </SettingsContainer>
             {sequence.map((d, i ) => {
                 const display = position <= i ? true : false
